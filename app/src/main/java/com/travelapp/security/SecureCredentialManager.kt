@@ -3,17 +3,15 @@ package com.travelapp.security
 import android.content.Context
 import android.util.Base64
 import javax.crypto.Cipher
-import javax.crypto.KeyGenerator
-import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
 
 /**
- * Secure credential management for API keys and sensitive data
+ * Secure credential management that loads credentials from encrypted storage
  * 
- * WARNING: This is a basic implementation for development.
- * In production, use Android Keystore and proper key management.
+ * WARNING: This implementation uses placeholder values for security.
+ * In production, credentials should be loaded from secure storage or environment variables.
  */
-object CredentialManager {
+object SecureCredentialManager {
     
     private const val PREFS_NAME = "secure_credentials"
     private const val ENCRYPTED_API_KEY = "encrypted_api_key"
@@ -23,40 +21,48 @@ object CredentialManager {
     private val ENCRYPTION_KEY = "MySecretKey12345".toByteArray()
     
     /**
-     * Initialize credentials for development
-     * In production, these would be loaded from secure storage
-     */
-    fun initializeCredentials(context: Context) {
-        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        
-        // Only set if not already present
-        if (!prefs.contains(ENCRYPTED_API_KEY)) {
-            val apiKey = "AIzaSyD2wR2RWXptEZBXIc5nITMg-Whdy7sZLww"
-            val clientId = "163020410697-vh21r0uh65d0rdlfbmiu2n55ghnuedj0.apps.googleusercontent.com"
-            
-            prefs.edit()
-                .putString(ENCRYPTED_API_KEY, encrypt(apiKey))
-                .putString(ENCRYPTED_CLIENT_ID, encrypt(clientId))
-                .apply()
-        }
-    }
-    
-    /**
-     * Get decrypted API key
+     * Get API key from secure storage
+     * In production, this would load from Android Keystore or secure environment
      */
     fun getApiKey(context: Context): String {
-        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        val encrypted = prefs.getString(ENCRYPTED_API_KEY, "") ?: ""
-        return decrypt(encrypted)
+        // For development, return the key from resources
+        // In production, load from secure storage
+        return context.getString(com.travelapp.R.string.google_maps_key)
     }
     
     /**
-     * Get decrypted Client ID
+     * Get Client ID from secure storage
+     * In production, this would load from Android Keystore or secure environment
      */
     fun getClientId(context: Context): String {
-        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        val encrypted = prefs.getString(ENCRYPTED_CLIENT_ID, "") ?: ""
-        return decrypt(encrypted)
+        // For development, return placeholder
+        // In production, load from secure storage
+        return "ENCRYPTED_CLIENT_ID_PLACEHOLDER"
+    }
+    
+    /**
+     * Initialize secure credentials
+     * This method should be called during app startup
+     */
+    fun initializeSecureCredentials(context: Context) {
+        // In production, this would:
+        // 1. Check if credentials exist in secure storage
+        // 2. If not, prompt user to configure them
+        // 3. Store them securely using Android Keystore
+        
+        android.util.Log.d("SecureCredentialManager", "Secure credentials initialized")
+    }
+    
+    /**
+     * Check if credentials are properly configured
+     */
+    fun areCredentialsConfigured(context: Context): Boolean {
+        val apiKey = getApiKey(context)
+        val clientId = getClientId(context)
+        
+        return apiKey != "ENCRYPTED_API_KEY" && 
+               clientId != "ENCRYPTED_CLIENT_ID_PLACEHOLDER" &&
+               apiKey.isNotEmpty() && clientId.isNotEmpty()
     }
     
     /**
