@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">Travel App</string>
+    
+    <!-- Navigation -->
+    <string name="nav_agenda">Agenda</string>
+    <string name="nav_map">Map</string>
+    <string name="nav_points">Points</string>
+    <string name="nav_settings">Settings</string>
+    
+    <!-- Agenda Tab -->
+    <string name="agenda_title">Travel Agenda</string>
+    <string name="sign_in_google">Sign in with Google</string>
+    <string name="sync_progress">Syncing travel data...</string>
+    <string name="add_travel_item">Add Travel Item</string>
+    <string name="no_trips">No trips found. Sign in to sync your travel data.</string>
+    
+    <!-- Map Tab -->
+    <string name="map_title">Map</string>
+    <string name="save_poi">Save POI</string>
+    <string name="tap_for_directions">Tap for Directions</string>
+    <string name="poi_saved">Point of Interest saved!</string>
+    
+    <!-- Points Tab -->
+    <string name="points_title">Points of Interest</string>
+    <string name="add_poi">Add POI</string>
+    <string name="no_pois">No points of interest saved yet.</string>
+    <string name="delete_poi">Delete POI</string>
+    <string name="navigate_to_poi">Navigate to POI</string>
+    
+    <!-- Settings Tab -->
+    <string name="settings_title">Settings</string>
+    <string name="sync_status">Sync Status</string>
+    <string name="last_sync">Last Sync</string>
+    <string name="sync_now">Sync Now</string>
+    <string name="google_connected">Connected to Google</string>
+    <string name="google_not_connected">Not connected to Google</string>
+    
+    <!-- Common -->
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="loading">Loading...</string>
+    <string name="error">Error</string>
+    <string name="retry">Retry</string>
+</resources>
