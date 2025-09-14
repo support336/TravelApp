@@ -5,12 +5,12 @@
 Your Travel App is now configured with the following Google APIs:
 
 ### 🗺️ Google Maps API
-- **API Key**: `AIzaSyDDzJmVipPpZDu-QPgrhUe4zlLv6xUkop0`
-- **Maps ID**: `4efb0711f8a46bf7`
+- **API Key**: `***********`
+- **Maps ID**: `**********`
 - **Status**: ✅ Configured in `google_maps_key.xml` and `AndroidManifest.xml`
 
 ### 🔐 Google OAuth
-- **Client ID**: `163020410697-a3ekt22gdusdng1f9il23i0e7mpc7nhg.apps.googleusercontent.com`
+- **Client ID**: `********`
 - **Status**: ✅ Configured in `google-services.json`
 
 ## 🔧 Required API Enabling
