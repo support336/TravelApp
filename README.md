@@ -87,10 +87,20 @@ app/
 
 ## API Keys Required
 
-- Google Maps API Key
-- Google OAuth Client ID
-- Google Calendar API (enabled)
-- Gmail API (enabled)
+- Google Maps API Key (configured)
+- Google OAuth Client ID (configured)
+- Google Calendar API (needs to be enabled)
+- Gmail API (needs to be enabled)
+
+## 🔒 Security
+
+**IMPORTANT**: This repository contains API credentials that are used for development. In a production environment, these should be:
+- Stored in environment variables
+- Encrypted using Android Keystore
+- Restricted by package name and SHA-1 fingerprint
+- Regularly rotated
+
+The current credentials are for development purposes only.
 
 ## Current Status
 

@@ -58,7 +58,12 @@ captures/
 .cxx/
 
 # Google Services (e.g. APIs or Firebase)
+# Note: google-services.json is included for development but should be secured in production
 # google-services.json
+
+# Sensitive configuration files
+# config.properties
+# secrets.properties
 
 # Freeline
 freeline.py

@@ -349,80 +349,18 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListener
         view.findViewById<android.widget.TextView>(R.id.poiRatingText).text = "4.2" // Placeholder rating
         view.findViewById<android.widget.TextView>(R.id.poiHoursText).text = "Open now" // Placeholder hours
         
-        // Set up directions button - use a different approach
-        val directionsButton = view.findViewById<android.widget.Button>(R.id.directionsButton)
-        android.util.Log.d("MapFragment", "Directions button found: ${directionsButton != null}")
-        if (directionsButton != null) {
-            // Store marker data in button tags for later use
-            directionsButton.tag = marker
-            directionsButton.isClickable = true
-            directionsButton.isFocusable = true
-            
-            // Use a different click handling approach
-            directionsButton.setOnTouchListener { v, event ->
-                if (event.action == android.view.MotionEvent.ACTION_UP) {
-                    android.util.Log.d("MapFragment", "Directions button TOUCHED for ${marker.title}")
-                    android.widget.Toast.makeText(requireContext(), "Directions touched!", android.widget.Toast.LENGTH_SHORT).show()
-                    
-                    // Handle directions
-                    try {
-                        val location = marker.position
-                        val address = "${marker.title}, ${location.latitude}, ${location.longitude}"
-                        
-                        // First try: Google Maps navigation
-                        val navUri = "google.navigation:q=${location.latitude},${location.longitude}"
-                        val navIntent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(navUri))
-                        navIntent.setPackage("com.google.android.apps.maps")
-                        
-                        if (navIntent.resolveActivity(requireContext().packageManager) != null) {
-                            startActivity(navIntent)
-                            android.util.Log.d("MapFragment", "Opened Google Maps navigation")
-                        } else {
-                            // Fallback: Generic maps intent
-                            val mapsUri = "geo:${location.latitude},${location.longitude}?q=${android.net.Uri.encode(address)}"
-                            val mapsIntent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(mapsUri))
-                            startActivity(mapsIntent)
-                            android.util.Log.d("MapFragment", "Opened generic maps")
-                        }
-                    } catch (e: Exception) {
-                        android.util.Log.e("MapFragment", "Error opening directions", e)
-                        android.widget.Toast.makeText(requireContext(), "Could not open directions", android.widget.Toast.LENGTH_SHORT).show()
-                    }
-                    true
-                } else {
-                    false
-                }
-            }
-        } else {
-            android.util.Log.e("MapFragment", "Directions button not found!")
-        }
+        // Store marker data in the view for later use
+        view.tag = marker
         
-        // Set up save button - use a different approach
-        val saveButton = view.findViewById<android.widget.Button>(R.id.saveButton)
-        android.util.Log.d("MapFragment", "Save button found: ${saveButton != null}")
-        if (saveButton != null) {
-            // Store marker data in button tags for later use
-            saveButton.tag = marker
-            saveButton.isClickable = true
-            saveButton.isFocusable = true
-            
-            // Use a different click handling approach
-            saveButton.setOnTouchListener { v, event ->
-                if (event.action == android.view.MotionEvent.ACTION_UP) {
-                    android.util.Log.d("MapFragment", "Save button TOUCHED for ${marker.title}")
-                    android.widget.Toast.makeText(requireContext(), "Save touched!", android.widget.Toast.LENGTH_SHORT).show()
-                    
-                    selectedLocation = marker.position
-                    selectedMarker = marker
-                    isSelectedLocationMarker = true
-                    binding.savePoiFab.visibility = View.VISIBLE
-                    true
-                } else {
-                    false
-                }
+        // Set up InfoWindow click handling
+        view.setOnTouchListener { v, event ->
+            if (event.action == android.view.MotionEvent.ACTION_UP) {
+                android.util.Log.d("MapFragment", "InfoWindow TOUCHED for ${marker.title}")
+                handleInfoWindowClick(marker, event.x, event.y, view)
+                true
+            } else {
+                false
             }
-        } else {
-            android.util.Log.e("MapFragment", "Save button not found!")
         }
         
         android.util.Log.d("MapFragment", "Created custom InfoWindow with POI details")
@@ -431,6 +369,83 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListener
 
     override fun getInfoContents(marker: Marker): View? {
         return null
+    }
+    
+    private fun handleInfoWindowClick(marker: Marker, x: Float, y: Float, view: View) {
+        android.util.Log.d("MapFragment", "=== INFO WINDOW CLICK HANDLER ===")
+        android.util.Log.d("MapFragment", "Touch coordinates: x=$x, y=$y")
+        
+        // Get button views
+        val directionsButton = view.findViewById<android.widget.Button>(R.id.directionsButton)
+        val saveButton = view.findViewById<android.widget.Button>(R.id.saveButton)
+        
+        // Get button locations
+        val directionsLocation = IntArray(2)
+        val saveLocation = IntArray(2)
+        directionsButton?.getLocationOnScreen(directionsLocation)
+        saveButton?.getLocationOnScreen(saveLocation)
+        
+        // Convert screen coordinates to view coordinates
+        val viewLocation = IntArray(2)
+        view.getLocationOnScreen(viewLocation)
+        
+        val relativeX = x
+        val relativeY = y
+        
+        android.util.Log.d("MapFragment", "Directions button bounds: ${directionsButton?.left}-${directionsButton?.right}, ${directionsButton?.top}-${directionsButton?.bottom}")
+        android.util.Log.d("MapFragment", "Save button bounds: ${saveButton?.left}-${saveButton?.right}, ${saveButton?.top}-${saveButton?.bottom}")
+        
+        // Check if touch is within directions button bounds
+        if (directionsButton != null && 
+            relativeX >= directionsButton.left && relativeX <= directionsButton.right &&
+            relativeY >= directionsButton.top && relativeY <= directionsButton.bottom) {
+            
+            android.util.Log.d("MapFragment", "Directions button clicked!")
+            android.widget.Toast.makeText(requireContext(), "Directions clicked!", android.widget.Toast.LENGTH_SHORT).show()
+            
+            // Handle directions
+            try {
+                val location = marker.position
+                val address = "${marker.title}, ${location.latitude}, ${location.longitude}"
+                
+                // First try: Google Maps navigation
+                val navUri = "google.navigation:q=${location.latitude},${location.longitude}"
+                val navIntent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(navUri))
+                navIntent.setPackage("com.google.android.apps.maps")
+                
+                if (navIntent.resolveActivity(requireContext().packageManager) != null) {
+                    startActivity(navIntent)
+                    android.util.Log.d("MapFragment", "Opened Google Maps navigation")
+                } else {
+                    // Fallback: Generic maps intent
+                    val mapsUri = "geo:${location.latitude},${location.longitude}?q=${android.net.Uri.encode(address)}"
+                    val mapsIntent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(mapsUri))
+                    startActivity(mapsIntent)
+                    android.util.Log.d("MapFragment", "Opened generic maps")
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("MapFragment", "Error opening directions", e)
+                android.widget.Toast.makeText(requireContext(), "Could not open directions", android.widget.Toast.LENGTH_SHORT).show()
+            }
+        }
+        // Check if touch is within save button bounds
+        else if (saveButton != null && 
+                 relativeX >= saveButton.left && relativeX <= saveButton.right &&
+                 relativeY >= saveButton.top && relativeY <= saveButton.bottom) {
+            
+            android.util.Log.d("MapFragment", "Save button clicked!")
+            android.widget.Toast.makeText(requireContext(), "Save clicked!", android.widget.Toast.LENGTH_SHORT).show()
+            
+            selectedLocation = marker.position
+            selectedMarker = marker
+            isSelectedLocationMarker = true
+            binding.savePoiFab.visibility = View.VISIBLE
+        }
+        else {
+            android.util.Log.d("MapFragment", "InfoWindow clicked but not on a button")
+        }
+        
+        android.util.Log.d("MapFragment", "=== END INFO WINDOW CLICK HANDLER ===")
     }
 
     override fun onDestroyView() {

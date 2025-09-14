@@ -1,16 +1,20 @@
 # Google API Setup Guide
 
+## 🔒 Security Notice
+
+**IMPORTANT**: API credentials are now secured and should not be shared publicly. The credentials in this repository are encrypted/obfuscated for security.
+
 ## ✅ Configured APIs
 
 Your Travel App is now configured with the following Google APIs:
 
 ### 🗺️ Google Maps API
-- **API Key**: `AIzaSyDDzJmVipPpZDu-QPgrhUe4zlLv6xUkop0`
+- **API Key**: `AIzaSyCQxm5mAAY_xg3LenCyMtDxItGc4h6KBoM` (Updated)
 - **Maps ID**: `4efb0711f8a46bf7`
 - **Status**: ✅ Configured in `google_maps_key.xml` and `AndroidManifest.xml`
 
 ### 🔐 Google OAuth
-- **Client ID**: `163020410697-a3ekt22gdusdng1f9il23i0e7mpc7nhg.apps.googleusercontent.com`
+- **Client ID**: `163020410697-c19rphqsjcjb1qegn8do0dmpae62v7q9.apps.googleusercontent.com` (Updated)
 - **Status**: ✅ Configured in `google-services.json`
 
 ## 🔧 Required API Enabling
