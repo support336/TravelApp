@@ -31,8 +31,8 @@ object CredentialManager {
         
         // Only set if not already present
         if (!prefs.contains(ENCRYPTED_API_KEY)) {
-            val apiKey = "AIzaSyCQxm5mAAY_xg3LenCyMtDxItGc4h6KBoM"
-            val clientId = "163020410697-c19rphqsjcjb1qegn8do0dmpae62v7q9.apps.googleusercontent.com"
+            val apiKey = "AIzaSyD2wR2RWXptEZBXIc5nITMg-Whdy7sZLww"
+            val clientId = "163020410697-vh21r0uh65d0rdlfbmiu2n55ghnuedj0.apps.googleusercontent.com"
             
             prefs.edit()
                 .putString(ENCRYPTED_API_KEY, encrypt(apiKey))

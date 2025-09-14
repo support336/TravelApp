@@ -68,6 +68,7 @@ credentials.properties
 # Encrypted credential files
 **/secure_credentials.xml
 **/encrypted_*.xml
+*.encrypted
 
 # Freeline
 freeline.py
